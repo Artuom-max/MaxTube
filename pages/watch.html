@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Смотреть - MaxTube</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="watch-page">
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="../index.html" class="logo">
+                <img src="../logo.png" alt="MaxTube">
+            </a>
+        </div>
+        
+        <div class="header-center">
+            <div class="search-box">
+                <input type="text" placeholder="Поиск" id="searchInput">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <div class="auth-buttons" id="authButtons">
+                <a href="login.html" class="login-btn">
+                    <i class="fas fa-user-circle"></i>
+                    Войти
+                </a>
+            </div>
+            <div class="auth-actions" id="authActions" style="display: none;">
+                <button class="icon-btn" title="Уведомления">
+                    <i class="fas fa-bell"></i>
+                </button>
+            </div>
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-avatar" id="userAvatar">
+                    <img src="" alt="Avatar" id="userAvatarImg">
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-header">
+                        <img src="" alt="Avatar" id="dropdownAvatar">
+                        <div class="user-info">
+                            <span class="user-name" id="userName"></span>
+                            <span class="user-email" id="userEmail"></span>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="profile.html" class="dropdown-item">
+                        <i class="fas fa-user"></i> Мой канал
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="watch-container">
+        <div class="video-section">
+            <div class="video-player-wrapper">
+                <video id="videoPlayer" controls>
+                    <source src="" type="video/mp4">
+                    Ваш браузер не поддерживает видео
+                </video>
+            </div>
+            
+            <div class="video-info">
+                <h1 class="video-title" id="videoTitle">Загрузка...</h1>
+                
+                <div class="video-meta">
+                    <div class="video-stats">
+                        <span id="videoViews">0 просмотров</span>
+                        <span>•</span>
+                        <span id="videoDate"></span>
+                    </div>
+                    
+                    <div class="video-actions">
+                        <button class="action-btn" id="likeBtn">
+                            <i class="far fa-thumbs-up"></i>
+                            <span id="likeCount">0</span>
+                        </button>
+                        <button class="action-btn" id="dislikeBtn">
+                            <i class="far fa-thumbs-down"></i>
+                        </button>
+                        <button class="action-btn" id="shareBtn">
+                            <i class="fas fa-share"></i>
+                            <span>Поделиться</span>
+                        </button>
+                        <button class="action-btn" id="saveBtn">
+                            <i class="fas fa-bookmark"></i>
+                            <span>Сохранить</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="channel-info">
+                <div class="channel-left">
+                    <img src="../logo.png" alt="Channel" class="channel-avatar" id="channelAvatar">
+                    <div class="channel-details">
+                        <h3 class="channel-name" id="channelName">Канал</h3>
+                        <span class="channel-subs" id="channelSubs">0 подписчиков</span>
+                    </div>
+                    <button class="subscribe-btn" id="subscribeBtn">Подписаться</button>
+                </div>
+            </div>
+            
+            <div class="video-description" id="videoDescription">
+                <div class="description-content" id="descriptionContent">
+                    <p id="descriptionText"></p>
+                </div>
+                <button class="show-more-btn" id="showMoreBtn">Ещё</button>
+            </div>
+            
+            <div class="comments-section">
+                <div class="comments-header">
+                    <h3><span id="commentsCount">0</span> комментариев</h3>
+                </div>
+                
+                <div class="add-comment" id="addComment" style="display: none;">
+                    <img src="" alt="Avatar" class="comment-avatar" id="commentAvatar">
+                    <div class="comment-input-wrapper">
+                        <input type="text" placeholder="Написать комментарий..." id="commentInput">
+                        <div class="comment-buttons" id="commentButtons" style="display: none;">
+                            <button class="btn-secondary" id="cancelComment">Отмена</button>
+                            <button class="btn-primary" id="submitComment">Отправить</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="login-to-comment" id="loginToComment">
+                    <p><a href="login.html">Войдите</a>, чтобы оставить комментарий</p>
+                </div>
+                
+                <div class="comments-list" id="commentsList"></div>
+            </div>
+        </div>
+        
+        <aside class="recommended-section">
+            <h3>Рекомендации</h3>
+            <div class="recommended-list" id="recommendedList"></div>
+        </aside>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/video.js"></script>
+    <script>
+        let currentVideoId = null;
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Получаем ID видео
+            const urlParams = new URLSearchParams(window.location.search);
+            currentVideoId = urlParams.get('v');
+            
+            if (!currentVideoId) {
+                window.location.href = '../index.html';
+                return;
+            }
+            
+            // Инициализация
+            Auth.init();
+            await VideoManager.init();
+            
+            // Загрузка видео
+            loadVideo(currentVideoId);
+            loadRecommended(currentVideoId);
+            setupInteractions();
+            
+            // Поиск
+            document.getElementById('searchBtn')?.addEventListener('click', () => {
+                const query = document.getElementById('searchInput').value.trim();
+                if (query) {
+                    window.location.href = `../index.html?search=${encodeURIComponent(query)}`;
+                }
+            });
+            
+            document.getElementById('searchInput')?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const query = e.target.value.trim();
+                    if (query) {
+                        window.location.href = `../index.html?search=${encodeURIComponent(query)}`;
+                    }
+                }
+            });
+        });
+        
+        function loadVideo(videoId) {
+            const video = VideoManager.getVideo(videoId);
+            
+            if (!video) {
+                showToast('Видео не найдено', 'error');
+                setTimeout(() => window.location.href = '../index.html', 2000);
+                return;
+            }
+            
+            console.log('Загрузка видео:', video);
+            
+            // Устанавливаем источник видео
+            const player = document.getElementById('videoPlayer');
+            let videoSrc = video.src;
+            
+            // Определяем правильный путь
+            if (!videoSrc.startsWith('blob:') && !videoSrc.startsWith('data:') && !videoSrc.startsWith('http')) {
+                videoSrc = '../' + videoSrc;
+            }
+            
+            player.src = videoSrc;
+            
+            // Информация о видео
+            document.getElementById('videoTitle').textContent = video.title;
+            document.getElementById('videoViews').textContent = VideoManager.formatViews(video.views) + ' просмотров';
+            document.getElementById('videoDate').textContent = video.uploadDate;
+            document.getElementById('likeCount').textContent = VideoManager.formatViews(video.likes);
+            document.getElementById('channelName').textContent = video.channel;
+            document.getElementById('channelSubs').textContent = video.subscribers + ' подписчиков';
+            document.getElementById('descriptionText').textContent = video.description || 'Описание отсутствует';
+            
+            // Аватар канала
+            let avatarSrc = video.channelAvatar;
+            if (!avatarSrc.startsWith('data:') && !avatarSrc.startsWith('blob:') && !avatarSrc.startsWith('http')) {
+                avatarSrc = '../' + avatarSrc;
+            }
+            document.getElementById('channelAvatar').src = avatarSrc;
+            
+            document.title = video.title + ' - MaxTube';
+            
+            // Увеличиваем просмотры
+            VideoManager.incrementViews(videoId);
+            
+            // Добавляем в историю
+            const user = Auth.getCurrentUser();
+            if (user) {
+                VideoManager.addToHistory(user.id, videoId);
+            }
+            
+            // Загружаем комментарии
+            loadComments(videoId);
+        }
+        
+        function loadRecommended(currentVideoId) {
+            const videos = VideoManager.getAllVideos().filter(v => v.id !== currentVideoId);
+            const container = document.getElementById('recommendedList');
+            
+            container.innerHTML = videos.slice(0, 10).map(video => {
+                let thumbSrc = video.thumbnail;
+                if (!thumbSrc.startsWith('data:') && !thumbSrc.startsWith('blob:')) {
+                    thumbSrc = '../' + thumbSrc;
+                }
+                
+                return `
+                    <a href="watch.html?v=${video.id}" class="recommended-card">
+                        <div class="recommended-thumbnail">
+                            <img src="${thumbSrc}" alt="${video.title}" onerror="this.src='../Videos/Preview.png'">
+                            <span class="duration">${video.duration}</span>
+                        </div>
+                        <div class="recommended-info">
+                            <h4>${video.title}</h4>
+                            <span class="channel">${video.channel}</span>
+                            <span class="stats">${VideoManager.formatViews(video.views)} просмотров</span>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+        
+        function loadComments(videoId) {
+            const comments = VideoManager.getComments(videoId);
+            const container = document.getElementById('commentsList');
+            
+            document.getElementById('commentsCount').textContent = comments.length;
+            
+            if (comments.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); padding: 20px 0;">Пока нет комментариев. Будьте первым!</p>';
+                return;
+            }
+            
+            container.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <img src="${comment.avatar}" alt="${comment.author}" class="comment-avatar" onerror="this.src='../logo.png'">
+                    <div class="comment-content">
+                        <div class="comment-author">
+                            <span class="comment-author-name">${comment.author}</span>
+                            <span class="comment-date">${comment.date}</span>
+                        </div>
+                        <p class="comment-text">${comment.text}</p>
+                        <div class="comment-actions">
+                            <button class="comment-action-btn">
+                                <i class="far fa-thumbs-up"></i> ${comment.likes || 0}
+                            </button>
+                            <button class="comment-action-btn">
+                                <i class="far fa-thumbs-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function setupInteractions() {
+            const user = Auth.getCurrentUser();
+            
+            // Показываем форму комментария
+            if (user) {
+                document.getElementById('addComment').style.display = 'flex';
+                document.getElementById('loginToComment').style.display = 'none';
+                document.getElementById('commentAvatar').src = user.avatar;
+            }
+            
+            // Like
+            document.getElementById('likeBtn').addEventListener('click', function() {
+                if (!Auth.getCurrentUser()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                this.classList.toggle('active');
+                const icon = this.querySelector('i');
+                icon.classList.toggle('far');
+                icon.classList.toggle('fas');
+            });
+            
+            // Subscribe
+            document.getElementById('subscribeBtn').addEventListener('click', function() {
+                if (!Auth.getCurrentUser()) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                this.classList.toggle('subscribed');
+                this.textContent = this.classList.contains('subscribed') ? 'Вы подписаны' : 'Подписаться';
+            });
+            
+            // Save
+            document.getElementById('saveBtn').addEventListener('click', () => {
+                const user = Auth.getCurrentUser();
+                if (!user) {
+                    window.location.href = 'login.html';
+                    return;
+                }
+                VideoManager.addToWatchLater(user.id, currentVideoId);
+                showToast('Добавлено в "Смотреть позже"', 'success');
+            });
+            
+            // Share
+            document.getElementById('shareBtn').addEventListener('click', () => {
+                if (navigator.share) {
+                    navigator.share({
+                        title: document.getElementById('videoTitle').textContent,
+                        url: window.location.href
+                    });
+                } else {
+                    navigator.clipboard.writeText(window.location.href);
+                    showToast('Ссылка скопирована', 'success');
+                }
+            });
+            
+            // Description toggle
+            document.getElementById('showMoreBtn').addEventListener('click', function() {
+                const content = document.getElementById('descriptionContent');
+                content.classList.toggle('expanded');
+                this.textContent = content.classList.contains('expanded') ? 'Свернуть' : 'Ещё';
+            });
+            
+            // Comments
+            const commentInput = document.getElementById('commentInput');
+            const commentButtons = document.getElementById('commentButtons');
+            
+            commentInput?.addEventListener('focus', () => {
+                commentButtons.style.display = 'flex';
+            });
+            
+            document.getElementById('cancelComment')?.addEventListener('click', () => {
+                commentInput.value = '';
+                commentButtons.style.display = 'none';
+            });
+            
+            document.getElementById('submitComment')?.addEventListener('click', () => {
+                const text = commentInput.value.trim();
+                if (!text) return;
+                
+                const user = Auth.getCurrentUser();
+                if (!user) return;
+                
+                VideoManager.addComment(currentVideoId, {
+                    author: `${user.firstName} ${user.lastName}`,
+                    avatar: user.avatar,
+                    text: text
+                });
+                
+                commentInput.value = '';
+                commentButtons.style.display = 'none';
+                loadComments(currentVideoId);
+                showToast('Комментарий добавлен', 'success');
+            });
+        }
+        
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

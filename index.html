@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaxTube</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-btn" id="menuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="MaxTube">
+            </a>
+        </div>
+        
+        <div class="header-center">
+            <div class="search-box">
+                <input type="text" placeholder="Поиск" id="searchInput">
+                <button class="search-btn" id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <button class="voice-search" id="voiceSearch">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
+        
+        <div class="header-right">
+            <!-- Кнопки для авторизованных пользователей -->
+            <div class="auth-actions" id="authActions" style="display: none;">
+                <button class="icon-btn" id="uploadVideoBtn" title="Загрузить видео">
+                    <i class="fas fa-video-plus"></i>
+                </button>
+                <button class="icon-btn" id="notificationsBtn" title="Уведомления">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationBadge">0</span>
+                </button>
+            </div>
+            
+            <!-- Кнопка входа для неавторизованных -->
+            <div class="auth-buttons" id="authButtons">
+                <a href="pages/login.html" class="login-btn">
+                    <i class="fas fa-user-circle"></i>
+                    Войти
+                </a>
+            </div>
+            
+            <!-- Меню пользователя для авторизованных -->
+            <div class="user-menu" id="userMenu" style="display: none;">
+                <button class="user-avatar" id="userAvatar">
+                    <img src="" alt="Avatar" id="userAvatarImg">
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <div class="dropdown-header">
+                        <img src="" alt="Avatar" id="dropdownAvatar">
+                        <div class="user-info">
+                            <span class="user-name" id="userName"></span>
+                            <span class="user-email" id="userEmail"></span>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="pages/profile.html" class="dropdown-item">
+                        <i class="fas fa-user"></i> Мой канал
+                    </a>
+                    <a href="pages/studio.html" class="dropdown-item">
+                        <i class="fas fa-video"></i> Творческая студия
+                    </a>
+                    <a href="#" class="dropdown-item" id="historyBtn">
+                        <i class="fas fa-history"></i> История
+                    </a>
+                    <a href="#" class="dropdown-item" id="watchLaterBtn">
+                        <i class="fas fa-clock"></i> Смотреть позже
+                    </a>
+                    <a href="#" class="dropdown-item" id="likedBtn">
+                        <i class="fas fa-thumbs-up"></i> Понравившиеся
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" id="settingsBtn">
+                        <i class="fas fa-cog"></i> Настройки
+                    </a>
+                    <a href="#" class="dropdown-item" id="themeBtn">
+                        <i class="fas fa-moon"></i> Тема: тёмная
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <a href="index.html" class="nav-item active" data-page="home">
+                <i class="fas fa-home"></i>
+                <span>Главная</span>
+            </a>
+            <a href="#" class="nav-item" data-page="explore" id="exploreBtn">
+                <i class="fas fa-compass"></i>
+                <span>Навигатор</span>
+            </a>
+            <a href="#" class="nav-item" data-page="shorts" id="shortsBtn">
+                <i class="fas fa-bolt"></i>
+                <span>Shorts</span>
+            </a>
+            <a href="#" class="nav-item" data-page="subscriptions" id="subscriptionsBtn">
+                <i class="fas fa-folder"></i>
+                <span>Подписки</span>
+            </a>
+            
+            <div class="sidebar-divider"></div>
+            
+            <a href="#" class="nav-item" data-page="history" id="sidebarHistoryBtn">
+                <i class="fas fa-history"></i>
+                <span>История</span>
+            </a>
+            <a href="#" class="nav-item" data-page="watch-later" id="sidebarWatchLaterBtn">
+                <i class="fas fa-clock"></i>
+                <span>Смотреть позже</span>
+            </a>
+            <a href="#" class="nav-item" data-page="liked" id="sidebarLikedBtn">
+                <i class="fas fa-thumbs-up"></i>
+                <span>Понравившиеся</span>
+            </a>
+            
+            <div class="sidebar-divider"></div>
+            
+            <h3 class="sidebar-title">Подписки</h3>
+            <div class="subscriptions" id="subscriptions">
+                <!-- Подписки добавляются через JS -->
+            </div>
+            
+            <div class="sidebar-divider"></div>
+            
+            <h3 class="sidebar-title">Навигатор</h3>
+            <a href="#" class="nav-item" data-category="trending">
+                <i class="fas fa-fire"></i>
+                <span>В тренде</span>
+            </a>
+            <a href="#" class="nav-item" data-category="music">
+                <i class="fas fa-music"></i>
+                <span>Музыка</span>
+            </a>
+            <a href="#" class="nav-item" data-category="gaming">
+                <i class="fas fa-gamepad"></i>
+                <span>Игры</span>
+            </a>
+            <a href="#" class="nav-item" data-category="news">
+                <i class="fas fa-newspaper"></i>
+                <span>Новости</span>
+            </a>
+            <a href="#" class="nav-item" data-category="sports">
+                <i class="fas fa-trophy"></i>
+                <span>Спорт</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <p>© 2024 MaxTube</p>
+            <div class="footer-links">
+                <a href="#">О сервисе</a>
+                <a href="#">Условия</a>
+                <a href="#">Конфиденциальность</a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Categories -->
+        <div class="categories-bar">
+            <button class="category-chip active" data-category="all">Все</button>
+            <button class="category-chip" data-category="music">Музыка</button>
+            <button class="category-chip" data-category="gaming">Игры</button>
+            <button class="category-chip" data-category="news">Новости</button>
+            <button class="category-chip" data-category="movies">Фильмы</button>
+            <button class="category-chip" data-category="sports">Спорт</button>
+            <button class="category-chip" data-category="education">Обучение</button>
+            <button class="category-chip" data-category="tech">Технологии</button>
+            <button class="category-chip" data-category="cooking">Кулинария</button>
+            <button class="category-chip" data-category="travel">Путешествия</button>
+            <button class="category-chip" data-category="humor">Юмор</button>
+        </div>
+
+        <!-- Video Grid -->
+        <div class="video-grid" id="videoGrid">
+            <!-- Видео добавляются через JS -->
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Загрузка видео...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-video-slash"></i>
+            <h2>Видео не найдены</h2>
+            <p>Добавьте видео в папку Videos</p>
+        </div>
+    </main>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content upload-modal">
+            <div class="modal-header">
+                <h2><i class="fas fa-upload"></i> Загрузить видео</h2>
+                <button class="modal-close" id="closeUploadModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Перетащите видео сюда</p>
+                    <span>или</span>
+                    <button class="select-file-btn" id="selectFileBtn">Выберите файл</button>
+                    <input type="file" id="videoFileInput" accept="video/*" hidden>
+                    <p class="upload-hint">MP4, WebM, MOV до 2GB</p>
+                </div>
+                
+                <form class="upload-form" id="uploadForm" style="display: none;">
+                    <div class="upload-preview">
+                        <video id="uploadPreviewVideo" muted></video>
+                        <div class="upload-progress" id="uploadProgress">
+                            <div class="progress-bar"></div>
+                            <span>0%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="videoTitle">Название *</label>
+                        <input type="text" id="videoTitle" placeholder="Введите название видео" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="videoDescription">Описание</label>
+                        <textarea id="videoDescription" rows="4" placeholder="О чём это видео?"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="videoCategory">Категория</label>
+                            <select id="videoCategory">
+                                <option value="other">Другое</option>
+                                <option value="music">Музыка</option>
+                                <option value="gaming">Игры</option>
+                                <option value="education">Обучение</option>
+                                <option value="entertainment">Развлечения</option>
+                                <option value="tech">Технологии</option>
+                                <option value="sports">Спорт</option>
+                                <option value="news">Новости</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="videoVisibility">Доступ</label>
+                            <select id="videoVisibility">
+                                <option value="public">Открытый доступ</option>
+                                <option value="unlisted">По ссылке</option>
+                                <option value="private">Ограниченный</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Превью</label>
+                        <div class="thumbnail-selector" id="thumbnailSelector">
+                            <div class="thumbnail-option selected" data-index="0">
+                                <img src="" alt="Превью 1">
+                            </div>
+                            <div class="thumbnail-option" data-index="1">
+                                <img src="" alt="Превью 2">
+                            </div>
+                            <div class="thumbnail-option" data-index="2">
+                                <img src="" alt="Превью 3">
+                            </div>
+                            <div class="thumbnail-upload">
+                                <i class="fas fa-image"></i>
+                                <span>Загрузить</span>
+                                <input type="file" accept="image/*" id="thumbnailInput">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelUpload">Отмена</button>
+                        <button type="submit" class="btn-primary" id="publishVideo">
+                            <i class="fas fa-upload"></i> Опубликовать
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Panel -->
+    <div class="notifications-panel" id="notificationsPanel">
+        <div class="panel-header">
+            <h3>Уведомления</h3>
+            <button class="mark-all-read" id="markAllRead">Прочитать все</button>
+        </div>
+        <div class="notifications-list" id="notificationsList">
+            <!-- Уведомления добавляются через JS -->
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/video.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

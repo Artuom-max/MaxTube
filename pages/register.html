@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - MaxTube</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <a href="../index.html" class="auth-logo">
+                    <img src="../logo.png" alt="MaxTube">
+                </a>
+                <h1>Регистрация</h1>
+                <p>Создайте аккаунт MaxTube</p>
+            </div>
+
+            <div class="social-login">
+                <button class="social-btn google-btn" id="googleRegister">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>Регистрация через Google</span>
+                </button>
+                
+                <button class="social-btn max-btn" id="maxRegister">
+                    <i class="fas fa-m"></i>
+                    <span>Регистрация через Max</span>
+                </button>
+            </div>
+
+            <div class="auth-divider">
+                <span>или</span>
+            </div>
+
+            <form class="auth-form" id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">Имя</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="firstName" name="firstName" placeholder="Иван" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Фамилия</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="lastName" name="lastName" placeholder="Иванов" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-at"></i>
+                        <input type="text" id="username" name="username" placeholder="username" required>
+                    </div>
+                    <span class="error-message" id="usernameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+                    </div>
+                    <span class="error-message" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" name="password" placeholder="Минимум 8 символов" required>
+                        <button type="button" class="toggle-password" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar"></div>
+                        <span class="strength-text"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Подтвердите пароль</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Повторите пароль" required>
+                    </div>
+                    <span class="error-message" id="confirmPasswordError"></span>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <span class="checkmark"></span>
+                        Я согласен с <a href="#">условиями использования</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <span>Зарегистрироваться</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Уже есть аккаунт? <a href="login.html">Войдите</a></p>
+            </div>
+        </div>
+
+        <div class="auth-decoration">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="circle circle-3"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Проверяем, авторизован ли уже пользователь
+            if (Auth.getCurrentUser()) {
+                window.location.href = '../index.html';
+                return;
+            }
+
+            const registerForm = document.getElementById('registerForm');
+            const googleRegister = document.getElementById('googleRegister');
+            const maxRegister = document.getElementById('maxRegister');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = this.closest('.input-wrapper').querySelector('input');
+                    const type = input.type === 'password' ? 'text' : 'password';
+                    input.type = type;
+                    this.innerHTML = type === 'password' 
+                        ? '<i class="fas fa-eye"></i>' 
+                        : '<i class="fas fa-eye-slash"></i>';
+                });
+            });
+
+            // Password strength checker
+            passwordInput.addEventListener('input', () => {
+                const strength = checkPasswordStrength(passwordInput.value);
+                updateStrengthIndicator(strength);
+            });
+
+            // Email register
+            registerForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (password !== confirmPassword) {
+                    showToast('Пароли не совпадают', 'error');
+                    return;
+                }
+
+                try {
+                    await Auth.registerWithEmail({
+                        firstName,
+                        lastName,
+                        username,
+                        email,
+                        password
+                    });
+                    showToast('Регистрация успешна! Выполняется вход...', 'success');
+                    
+                    // Автоматический вход после регистрации
+                    await Auth.loginWithEmail(email, password, true);
+                    
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1500);
+                } catch (error) {
+                    showToast(error.message, 'error');
+                }
+            });
+
+            // Google register
+            googleRegister.addEventListener('click', async () => {
+                try {
+                    await Auth.loginWithGoogle();
+                    showToast('Успешная регистрация через Google!', 'success');
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1000);
+                } catch (error) {
+                    if (error.message !== 'Отменено пользователем') {
+                        showToast(error.message, 'error');
+                    }
+                }
+            });
+
+            // Max register
+            maxRegister.addEventListener('click', async () => {
+                try {
+                    await Auth.loginWithMax();
+                    showToast('Успешная регистрация через Max!', 'success');
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1000);
+                } catch (error) {
+                    if (error.message !== 'Отменено пользователем') {
+                        showToast(error.message, 'error');
+                    }
+                }
+            });
+        });
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]+/)) strength++;
+            if (password.match(/[A-Z]+/)) strength++;
+            if (password.match(/[0-9]+/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]+/)) strength++;
+            return strength;
+        }
+
+        function updateStrengthIndicator(strength) {
+            const strengthBar = document.querySelector('.strength-bar');
+            const strengthText = document.querySelector('.strength-text');
+            
+            const levels = ['', 'Очень слабый', 'Слабый', 'Средний', 'Хороший', 'Отличный'];
+            const colors = ['#ddd', '#ff4444', '#ffaa00', '#ffdd00', '#00cc66', '#00aa55'];
+            const widths = [0, 20, 40, 60, 80, 100];
+            
+            strengthBar.style.width = `${widths[strength]}%`;
+            strengthBar.style.backgroundColor = colors[strength];
+            strengthText.textContent = levels[strength];
+            strengthText.style.color = colors[strength];
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
