@@ -11,7 +11,6 @@ const VideoManager = {
     
     // Ваши видео файлы в папке Videos
     videoFiles: [
-        'test.mp4',
         'video1.mp4',
         'video2.mp4',
         'video3.mp4',
@@ -520,5 +519,6 @@ const VideoManager = {
         container.innerHTML = videos.map(v => this.createVideoCard(v, bp)).join('');
     }
 };
+
 
 window.VideoManager = VideoManager;
